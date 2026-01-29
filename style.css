@@ -1,0 +1,72 @@
+* {
+  box-sizing: border-box;
+  font-family: system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(160deg,#0f2027,#203a43,#2c5364);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.app {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(0,0,0,0.35);
+  padding: 20px;
+  border-radius: 16px;
+  backdrop-filter: blur(14px);
+  text-align: center;
+}
+
+input, button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+}
+
+button {
+  background: #2979ff;
+  color: white;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: .6;
+}
+
+#status {
+  margin-top: 10px;
+  min-height: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+.temp {
+  font-size: 42px;
+  font-weight: bold;
+}
+
+#forecast {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 6px;
+  font-size: 13px;
+}
+
+.map {
+  height: 200px;
+  margin-top: 14px;
+  border-radius: 12px;
+  overflow: hidden;
+}
