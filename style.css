@@ -101,3 +101,40 @@ header {
   margin-top: 10px;
   opacity: 0.8;
 }
+
+/* Glass buttons & input */
+.controls input,
+.controls button {
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 18px;
+  color: #fff;
+  font-size: 15px;
+  padding: 14px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.controls button {
+  cursor: pointer;
+}
+
+.controls button:active {
+  transform: scale(0.96);
+}
+
+/* AI Insight card */
+.ai-box {
+  display: none;
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(22px);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #fff;
+  line-height: 1.6;
+  font-size: 14px;
+}
