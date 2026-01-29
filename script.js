@@ -3,11 +3,29 @@ const BASE = "https://api.openweathermap.org/data/2.5/weather";
 
 let map, marker;
 
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("searchBtn").onclick = searchCity;
-  document.getElementById("locBtn").onclick = searchLocation;
-});
+function initMap(lat, lon, condition = "") {
+  const isRain = condition.includes("rain");
+  const isNight = new Date().getHours() > 18;
 
+  const tileURL = isNight
+    ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+    : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+
+  if (!map) {
+    map = L.map("map", {
+      zoomControl: false,
+      inertia: true
+    }).setView([lat, lon], 11);
+
+    L.tileLayer(tileURL).addTo(map);
+    marker = L.marker([lat, lon]).addTo(map);
+  } else {
+    map.flyTo([lat, lon], 11, { duration: 1.2 });
+    marker.setLatLng([lat, lon]);
+  }
+
+  setTimeout(() => map.invalidateSize(), 200);
+}
 function status(msg) {
   document.getElementById("status").innerText = msg;
 }
@@ -117,3 +135,30 @@ searchBtn.addEventListener("click", async () => {
   }
 });
 
+const FORECAST_URL =
+  "https://api.openweathermap.org/data/2.5/forecast";
+async function loadForecast(lat, lon) {
+  const res = await fetch(
+    `${FORECAST_URL}?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
+  );
+  const data = await res.json();
+
+  const days = {};
+  data.list.forEach(item => {
+    const date = item.dt_txt.split(" ")[0];
+    if (!days[date]) days[date] = item;
+  });
+
+  const forecastDiv = document.getElementById("forecast");
+  forecastDiv.innerHTML = "";
+
+  Object.values(days).slice(0, 7).forEach(d => {
+    forecastDiv.innerHTML += `
+      <div class="forecast-day">
+        <p>${new Date(d.dt_txt).toDateString().slice(0,3)}</p>
+        <p>${Math.round(d.main.temp)}°</p>
+        <p>${d.weather[0].main}</p>
+      </div>
+    `;
+  });
+}
