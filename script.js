@@ -13,7 +13,8 @@ const extraEl = document.getElementById("extra");
 const forecastEl = document.getElementById("forecast");
 const voiceBtn = document.getElementById("voiceBtn");
 
-let map, marker, lastText = "";
+let map, marker, lastText = `Weather in ${name}. Temperature ${cur.main.temp} degree. ${cur.weather[0].description}`;
+
 
 function status(msg) { statusEl.textContent = msg; }
 
@@ -89,7 +90,7 @@ voiceBtn.onclick = () => {
 };
 // ===== AI WEATHER INSIGHT =====
 
-const OPENAI_API_KEY = "PASTE_YOUR_OPENAI_KEY_HERE";
+const OPENAI_API_KEY = "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";
 
 const aiBtn = document.getElementById("aiBtn");
 const aiResult = document.getElementById("aiResult");
