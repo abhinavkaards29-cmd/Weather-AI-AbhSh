@@ -88,48 +88,7 @@ locBtn.onclick = () => {
 voiceBtn.onclick = () => {
   speechSynthesis.speak(new SpeechSynthesisUtterance(lastText));
 };
-// ===== AI WEATHER INSIGHT =====
 
-const OPENAI_API_KEY = "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";
-
-const aiBtn = document.getElementById("aiBtn");
-const aiResult = document.getElementById("aiResult");
-
-aiBtn.onclick = async () => {
-  if (!lastText) {
-    aiResult.textContent = "Get weather first 🙂";
-    return;
-  }
-
-  aiResult.textContent = "🤖 Thinking...";
-
-  try {
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          {
-            role: "system",
-            content: "You are a helpful weather assistant. Explain weather simply."
-          },
-          {
-            role: "user",
-            content: lastText + ". Give advice and health tips."
-          }
-        ],
-        temperature: 0.6
-      })
-    });
-
-    const data = await res.json();
-    const reply = data.choices[0].message.content;
-
-    aiResult.textContent = reply;
 
     // Optional voice
     speechSynthesis.speak(new SpeechSynthesisUtterance(reply));
