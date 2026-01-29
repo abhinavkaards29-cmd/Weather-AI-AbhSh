@@ -1,6 +1,8 @@
 const API_KEY = "fab9b6d2db473ddcfb43b90e080ca8ee";
 const BASE = "https://api.openweathermap.org/data/2.5/weather";
 
+let isLoading = false;
+
 let map, marker;
 
 function initMap(lat, lon, condition = "") {
@@ -79,25 +81,43 @@ function searchLocation() {
 }
 
 async function fetchWeather(url) {
-  try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error();
-    const d = await res.json();
+  if (isLoading) return;        // ⛔ prevents hang
+  isLoading = true;
 
-    document.getElementById("location").innerText =
-      `${d.name}, ${d.sys.country}`;
-    document.getElementById("condition").innerText =
-      d.weather[0].description;
-    document.getElementById("temperature").innerText =
-      Math.round(d.main.temp) + "°";
-    document.getElementById("humidity").innerText = d.main.humidity;
-    document.getElementById("wind").innerText = d.wind.speed;
+  const res = await fetch(url);
+  const data = await res.json();
 
-    window.currentWeather = {
-  temp: temp,
-  humidity: humidity,
-  wind: wind
-};
+  // 1️⃣ READ DATA
+  const lat = data.coord.lat;
+  const lon = data.coord.lon;
+  const condition = data.weather[0].description.toLowerCase();
+
+  const temp = Math.round(data.main.temp);
+  const humidity = data.main.humidity;
+  const wind = data.wind.speed;
+
+  // 2️⃣ UPDATE UI (ONLY TEXT)
+  document.getElementById("location").innerText =
+    `${data.name}, ${data.sys.country}`;
+  document.getElementById("temperature").innerText = temp + "°";
+  document.getElementById("condition").innerText = data.weather[0].description;
+  document.getElementById("humidity").innerText = humidity;
+  document.getElementById("wind").innerText = wind;
+
+  // Save for AI (safe)
+  window.currentWeather = { temp, humidity, wind };
+
+  // 3️⃣ MAP — DELAYED
+  setTimeout(() => {
+    initMap(lat, lon, condition);
+  }, 200);
+
+  // 4️⃣ FORECAST — MORE DELAYED
+  setTimeout(() => {
+    loadForecast(lat, lon);
+    isLoading = false;          // ✅ RELEASE LOCK
+  }, 500);
+}
 
     showMap(d.coord.lat, d.coord.lon);
     status("");
