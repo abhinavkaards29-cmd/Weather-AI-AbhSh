@@ -20,6 +20,31 @@ async function searchCity() {
   fetchWeather(`${BASE}?q=${q}&units=metric&appid=${API_KEY}`);
 }
 
+async function geocodePlace(place) {
+  const url = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(place)}&limit=1&appid=${API_KEY}`;
+  const res = await fetch(url);
+  const data = await res.json();
+
+  if (!data || data.length === 0) {
+    throw new Error("Location not found");
+  }
+
+  return {
+    lat: data[0].lat,
+    lon: data[0].lon,
+    name: data[0].name,
+    country: data[0].country
+  };
+}
+
+async function fetchWeatherByCoords(lat, lon) {
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
+  const res = await fetch(url);
+  const d = await res.json();
+
+  updateUI(d);
+}
+
 function searchLocation() {
   if (!navigator.geolocation) {
     status("Location not supported");
@@ -74,3 +99,21 @@ function showMap(lat, lon) {
     marker.setLatLng([lat, lon]);
   }
 }
+searchBtn.addEventListener("click", async () => {
+  if (busy) return;
+  busy = true;
+
+  try {
+    const q = input.value.trim();
+    if (!q) return;
+
+    showStatus("Searching area...");
+    const place = await geocodePlace(q);
+    await fetchWeatherByCoords(place.lat, place.lon);
+  } catch (e) {
+    showStatus("Area not found");
+  } finally {
+    busy = false;
+  }
+});
+
