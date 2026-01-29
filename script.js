@@ -1,30 +1,63 @@
 const API_KEY = "fab9b6d2db473ddcfb43b90e080ca8ee";
+const BASE = "https://api.openweathermap.org/data/2.5/weather";
 
-const statusEl = document.getElementById("status");
-const searchBtn = document.getElementById("searchBtn");
-const locBtn = document.getElementById("locBtn");
-const input = document.getElementById("searchInput");
+let map, marker;
 
-const currentBox = document.getElementById("current");
-const placeEl = document.getElementById("place");
-const tempEl = document.getElementById("temp");
-const descEl = document.getElementById("desc");
-const extraEl = document.getElementById("extra");
-const forecastEl = document.getElementById("forecast");
-const voiceBtn = document.getElementById("voiceBtn");
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("searchBtn").onclick = searchCity;
+  document.getElementById("locBtn").onclick = searchLocation;
+});
 
-let map, marker, lastText = `Weather in ${name}. Temperature ${cur.main.temp} degree. ${cur.weather[0].description}`;
-
-
-function status(msg) { statusEl.textContent = msg; }
-
-async function getJSON(url) {
-  const r = await fetch(url);
-  if (!r.ok) throw "API Error";
-  return r.json();
+function status(msg) {
+  document.getElementById("status").innerText = msg;
 }
 
-function renderMap(lat, lon) {
+async function searchCity() {
+  const q = document.getElementById("searchInput").value.trim();
+  if (!q) return status("Enter a place");
+
+  status("Loading...");
+  fetchWeather(`${BASE}?q=${q}&units=metric&appid=${API_KEY}`);
+}
+
+function searchLocation() {
+  if (!navigator.geolocation) {
+    status("Location not supported");
+    return;
+  }
+
+  status("Getting location...");
+  navigator.geolocation.getCurrentPosition(pos => {
+    const { latitude, longitude } = pos.coords;
+    fetchWeather(
+      `${BASE}?lat=${latitude}&lon=${longitude}&units=metric&appid=${API_KEY}`
+    );
+  });
+}
+
+async function fetchWeather(url) {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error();
+    const d = await res.json();
+
+    document.getElementById("location").innerText =
+      `${d.name}, ${d.sys.country}`;
+    document.getElementById("condition").innerText =
+      d.weather[0].description;
+    document.getElementById("temperature").innerText =
+      Math.round(d.main.temp) + "°";
+    document.getElementById("humidity").innerText = d.main.humidity;
+    document.getElementById("wind").innerText = d.wind.speed;
+
+    showMap(d.coord.lat, d.coord.lon);
+    status("");
+  } catch {
+    status("Weather not found");
+  }
+}
+
+function showMap(lat, lon) {
   if (!map) {
     map = L.map("map").setView([lat, lon], 10);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
@@ -34,67 +67,3 @@ function renderMap(lat, lon) {
     marker.setLatLng([lat, lon]);
   }
 }
-
-async function showWeather(lat, lon, name, country) {
-  status("Loading weather...");
-  const cur = await getJSON(
-    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
-  );
-
-  const one = await getJSON(
-    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
-  );
-
-  currentBox.classList.remove("hidden");
-  placeEl.textContent = `${name}, ${country}`;
-  tempEl.textContent = Math.round(cur.main.temp) + "°C";
-  descEl.textContent = cur.weather[0].description;
-  extraEl.textContent = `Humidity ${cur.main.humidity}% • Wind ${cur.wind.speed} m/s`;
-
-  lastText = `Weather in ${name}. Temperature ${cur.main.temp} degree. ${cur.weather[0].description}`;
-
-  forecastEl.innerHTML = "";
-  forecastEl.classList.remove("hidden");
-
-  one.list.filter((_,i)=>i%8===0).slice(0,7).forEach(d=>{
-    const div = document.createElement("div");
-    div.innerHTML = `
-      <b>${new Date(d.dt_txt).toLocaleDateString()}</b><br>
-      ${Math.round(d.main.temp)}°
-    `;
-    forecastEl.appendChild(div);
-  });
-
-  renderMap(lat, lon);
-  status("");
-}
-
-searchBtn.onclick = async () => {
-  if (!input.value) return status("Enter area or city");
-  status("Searching...");
-  const g = await getJSON(
-    `https://api.openweathermap.org/geo/1.0/direct?q=${input.value}&limit=1&appid=${API_KEY}`
-  );
-  if (!g[0]) return status("Not found");
-  showWeather(g[0].lat, g[0].lon, g[0].name, g[0].country);
-};
-
-locBtn.onclick = () => {
-  navigator.geolocation.getCurrentPosition(p=>{
-    showWeather(p.coords.latitude, p.coords.longitude,"Your Location","");
-  });
-};
-
-voiceBtn.onclick = () => {
-  speechSynthesis.speak(new SpeechSynthesisUtterance(lastText));
-};
-
-
-    // Optional voice
-    speechSynthesis.speak(new SpeechSynthesisUtterance(reply));
-
-  } catch (err) {
-    aiResult.textContent = "AI error. Try again later.";
-    console.error(err);
-  }
-};
