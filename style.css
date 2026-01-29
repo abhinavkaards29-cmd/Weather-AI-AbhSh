@@ -1,7 +1,7 @@
 * {
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-               Roboto, Helvetica, Arial;
+  transition: background 0.2s ease,
+              color 0.2s ease,
+              box-shadow 0.2s ease;
 }
 
 body {
@@ -15,12 +15,12 @@ body {
 }
 
 .phone {
-  width: 360px;
-  background: rgba(255,255,255,0.06);
-  backdrop-filter: blur(20px);
-  border-radius: 28px;
-  padding: 20px;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.02)
+  );
+  border: 1px solid rgba(255,255,255,0.12);
 }
 
 header {
@@ -46,21 +46,40 @@ header {
 
 .controls input {
   width: 100%;
-  padding: 12px;
-  border-radius: 14px;
-  border: none;
-  margin-bottom: 10px;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.12);
+  color: white;
+  font-size: 15px;
+  outline: none;
+  backdrop-filter: blur(14px);
+}
+
+.controls input::placeholder {
+  color: rgba(255,255,255,0.6);
 }
 
 .controls button {
   width: 100%;
-  padding: 12px;
-  border-radius: 14px;
-  border: none;
-  background: #2563eb;
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.16);
+  backdrop-filter: blur(20px);
   color: white;
   font-size: 15px;
-  margin-bottom: 10px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.controls button:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+.controls button:active {
+  transform: scale(0.97);
 }
 
 .details {
