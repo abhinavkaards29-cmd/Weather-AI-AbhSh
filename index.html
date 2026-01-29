@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather Glass</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+</head>
+
+<body>
+  <div class="app">
+    <h1>🌤 Weather Glass</h1>
+
+    <input id="searchInput" placeholder="Area / City / Country">
+    <button id="searchBtn">Search</button>
+    <button id="locBtn">My Location</button>
+
+    <div id="status"></div>
+
+    <div id="current" class="hidden">
+      <h2 id="place"></h2>
+      <div id="temp" class="temp"></div>
+      <p id="desc"></p>
+      <p id="extra"></p>
+      <button id="voiceBtn">🔊 Speak Weather</button>
+    </div>
+
+    <div id="forecast" class="hidden"></div>
+
+    <div id="map" class="map"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
+  </script>
+</body>
+</html>
