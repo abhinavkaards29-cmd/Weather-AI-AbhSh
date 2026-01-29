@@ -50,12 +50,19 @@ async function fetchWeather(url) {
     document.getElementById("humidity").innerText = d.main.humidity;
     document.getElementById("wind").innerText = d.wind.speed;
 
+    window.currentWeather = {
+  temp: temp,
+  humidity: humidity,
+  wind: wind
+};
+
     showMap(d.coord.lat, d.coord.lon);
     status("");
   } catch {
     status("Weather not found");
   }
 }
+
 
 function showMap(lat, lon) {
   if (!map) {
