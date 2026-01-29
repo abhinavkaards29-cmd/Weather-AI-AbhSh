@@ -1,8 +1,0 @@
-{
-  "name": "Weather Glass",
-  "short_name": "Weather",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#2979ff"
-}
