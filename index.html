@@ -1,52 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Weather Glass</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Weather</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
-
-  <!-- Leaflet -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 </head>
 
 <body>
-  <div class="app">
-    <h1>🌤 Weather Glass</h1>
+  <div class="phone">
 
-    <input id="searchInput" placeholder="Area / City / Country">
-    <button id="searchBtn">Search</button>
-    <button id="locBtn">My Location</button>
+    <header>
+      <h1 id="location">Weather</h1>
+      <p id="condition">—</p>
+      <div id="temperature">--°</div>
+    </header>
 
-    <div id="status"></div>
+    <section class="controls">
+      <input id="searchInput" placeholder="City, Area or Country" />
+      <button id="searchBtn">Search</button>
+      <button id="locBtn">Use My Location</button>
+    </section>
 
-    <div id="current" class="hidden">
-      <h2 id="place"></h2>
-      <div id="temp" class="temp"></div>
-      <p id="desc"></p>
-      <p id="extra"></p>
-      <button id="voiceBtn">🔊 Speak Weather</button>
-      
-      <!--- ADD AI BUTTON HERE ----->
-      <button id="aiBtn">🤖 AI Weather Insight</button>
-      <div id="aiResult"></div>
-    </div>
+    <section class="details">
+      <div>Humidity <span id="humidity">--</span>%</div>
+      <div>Wind <span id="wind">--</span> m/s</div>
+    </section>
 
-    <div id="forecast" class="hidden"></div>
+    <div id="map"></div>
 
-    <div id="map" class="map"></div>
+    <p id="status"></p>
+
   </div>
 
-  <!-- Scripts -->
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="script.js"></script>
-
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("service-worker.js");
-    }
-  </script>
 </body>
 </html>
