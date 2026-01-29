@@ -1,0 +1,86 @@
+* {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a84ff, #1c1c1e);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.glass {
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(18px);
+  border-radius: 22px;
+  padding: 20px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+h1 {
+  margin: 0;
+}
+
+#temperature {
+  font-size: 64px;
+  font-weight: 600;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+}
+
+button {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255,255,255,0.2);
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: rgba(255,255,255,0.35);
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+#map {
+  height: 220px;
+  border-radius: 16px;
+  margin-top: 12px;
+}
+
+#forecast {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  margin-top: 10px;
+}
+
+.forecast-day {
+  min-width: 80px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 14px;
+  padding: 10px;
+  text-align: center;
+}
