@@ -46,12 +46,15 @@ async function loadWeather(lat, lon) {
   const d = await res.json();
 
   locationEl.textContent = `${d.name}, ${d.sys.country}`;  
-                                                                           window.currentWeather = {
-  conditionEl.textContent = d.weather[0].description;                        temp: temp,
-  tempEl.textContent = Math.round(d.main.temp) + "°";                        humidity: humidity,
-  humidityEl.textContent = d.main.humidity;                                  wind: wind
-  windEl.textContent = d.wind.speed;                                           };                                  
-                                                                              
+                                                                          
+  conditionEl.textContent = d.weather[0].description;                       
+
+  window.currentWeather = {
+  temp: Math.round(d.main.temp),
+  humidity: d.main.humidity,
+  wind: d.wind.speed,
+  condition: d.weather[0].description
+};
                                                                                 
                                                                                         
   
