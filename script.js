@@ -1,3 +1,4 @@
+console.log("JS STARTED");
 const API_KEY = "fab9b6d2db473ddcfb43b90e080ca8ee";
 const WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather";
 const GEO_URL = "https://api.openweathermap.org/geo/1.0/direct";
