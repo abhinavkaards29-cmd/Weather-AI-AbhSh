@@ -269,3 +269,62 @@ body.snow {
 body.thunder {
   background: linear-gradient(180deg, #141E30, #243B55);
 }
+
+@media (orientation: landscape) and (max-width: 900px) {
+  .phone {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 12px;
+  }
+
+  header {
+    grid-column: 1 / 2;
+  }
+
+  #forecast {
+    grid-column: 1 / 2;
+  }
+
+  #map {
+    grid-column: 2 / 3;
+    height: calc(100vh - 40px);
+  }
+}
+@media (min-width: 901px) {
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .phone {
+    width: 900px;
+    max-width: 95vw;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  header {
+    grid-column: 1 / 2;
+  }
+
+  #forecast {
+    grid-column: 1 / 2;
+  }
+
+  #map {
+    grid-column: 2 / 3;
+    height: 420px;
+  }
+
+  .ai-box {
+    grid-column: 1 / -1;
+  }
+}
+
+.phone {
+  transition: all 0.3s ease;
+}
