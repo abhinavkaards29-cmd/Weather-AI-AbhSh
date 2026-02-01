@@ -96,46 +96,65 @@ function updateMap(lat, lon) {
 }
 
 // FORECAST
+let forecastLoading = false;
+
 async function loadForecast(lat, lon) {
-  const res = await fetch(
-    `${FORECAST_URL}?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
-  );
-  const data = await res.json();
+  if (forecastLoading) return; // 🚫 prevent overlap
+  forecastLoading = true;
 
-  forecastEl.innerHTML = "";
-  const days = {};
+  try {
+    const res = await fetch(
+      `${FORECAST_URL}?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
+    );
 
-  data.list.forEach(i => {
-    const day = i.dt_txt.split(" ")[0];
-    if (!days[day]) days[day] = i;
-  });
+    const data = await res.json();
 
-  Object.values(days).slice(0, 7).forEach(d => {
-    const div = document.createElement("div");
-    div.className = "forecast-day";
-    div.innerHTML = `
-      <div>${new Date(d.dt_txt).toDateString().slice(0,3)}</div>
-      <div>${Math.round(d.main.temp)}°</div>
-      <div>${d.weather[0].main}</div>
-    `;
-    forecastEl.appendChild(div);
-  });
+    forecastEl.innerHTML = "";
+    const days = {};
+
+    data.list.forEach(i => {
+      const day = i.dt_txt.split(" ")[0];
+      if (!days[day]) days[day] = i;
+    });
+
+    Object.values(days).slice(0, 7).forEach(d => {
+      const div = document.createElement("div");
+      div.className = "forecast-day";
+      div.innerHTML = `
+        <div>${new Date(d.dt_txt).toDateString().slice(0,3)}</div>
+        <div>${Math.round(d.main.temp)}°</div>
+        <div>${d.weather[0].main}</div>
+      `;
+      forecastEl.appendChild(div);
+    });
+
+  } catch (e) {
+    console.error(e);
+  } finally {
+    forecastLoading = false;
+  }
 }
 
 // ---------- PREMIUM ANIMATION HELPERS ----------
+
+  let tempAnimation;
 
 function animateUpdate() {
   const temp = document.getElementById("temperature");
   if (!temp) return;
 
-  temp.animate(
+  // 🔥 cancel previous animation if exists
+  if (tempAnimation) tempAnimation.cancel();
+
+  tempAnimation = temp.animate(
     [
       { transform: "scale(0.92)", opacity: 0.6 },
       { transform: "scale(1)", opacity: 1 }
     ],
     {
       duration: 450,
-      easing: "cubic-bezier(0.22,1,0.36,1)"
+      easing: "cubic-bezier(0.22,1,0.36,1)",
+      fill: "forwards"
     }
   );
 }
