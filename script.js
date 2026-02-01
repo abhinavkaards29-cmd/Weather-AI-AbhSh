@@ -41,39 +41,46 @@ async function searchPlace(q) {
 }
 
 
-if (!lat || !lon) return;
 // LOAD WEATHER
 async function loadWeather(lat, lon) {
-  const res = await fetch(
-    `${WEATHER_URL}?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
-  );
-  const d = await res.json();
+  try {
+    const res = await fetch(
+      `${WEATHER_URL}?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
+    );
 
-  locationEl.textContent = `${d.name}, ${d.sys.country}`;
-  conditionEl.textContent = d.weather[0].description;
-  tempEl.textContent = Math.round(d.main.temp) + "°C";
-  humidityEl.textContent = d.main.humidity;
-  windEl.textContent = d.wind.speed;
+    if (!res.ok) throw new Error("Weather fetch failed");
 
-  window.currentWeather = {
-    temp: Math.round(d.main.temp),
-    humidity: d.main.humidity,
-    wind: d.wind.speed,
-    condition: d.weather[0].description,
-    lat,
-    lon
-  };
+    const d = await res.json();
 
-  updateMap(lat, lon);
- if (lat !== lastForecastLat || lon !== lastForecastLon) {
-  lastForecastLat = lat;
-  lastForecastLon = lon;
-  loadForecast(lat, lon);
-}
+    locationEl.textContent = `${d.name}, ${d.sys.country}`;
+    conditionEl.textContent = d.weather[0].description;
+    tempEl.textContent = Math.round(d.main.temp) + "°C";
+    humidityEl.textContent = d.main.humidity;
+    windEl.textContent = d.wind.speed;
 
-  // 🔥 THIS WAS MISSING
-  animateUpdate();
-  setMood(d.weather[0].description);
+    window.currentWeather = {
+      temp: Math.round(d.main.temp),
+      humidity: d.main.humidity,
+      wind: d.wind.speed,
+      condition: d.weather[0].description,
+      lat,
+      lon
+    };
+
+    updateMap(lat, lon);
+
+    if (lat !== lastForecastLat || lon !== lastForecastLon) {
+      lastForecastLat = lat;
+      lastForecastLon = lon;
+      loadForecast(lat, lon);
+    }
+
+    animateUpdate();
+    setMood(d.weather[0].description);
+
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 // MAP (SAFE)
