@@ -48,7 +48,7 @@ async function loadWeather(lat, lon) {
   locationEl.textContent = `${d.name}, ${d.sys.country}`;  
                                                                           
   conditionEl.textContent = d.weather[0].description;                       
-
+  tempEl.textContent = Math.round(d.main.temp) + "°";
   window.currentWeather = {
   temp: Math.round(d.main.temp),
   humidity: d.main.humidity,
