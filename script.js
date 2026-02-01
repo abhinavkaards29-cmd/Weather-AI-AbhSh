@@ -41,6 +41,8 @@ async function searchPlace(q) {
 if (!lat || !lon) return;
 // LOAD WEATHER
 async function loadWeather(lat, lon) {
+  let lastForecastLat = null;
+  let lastForecastLon = null;
   const res = await fetch(
     `${WEATHER_URL}?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
   );
@@ -62,7 +64,11 @@ async function loadWeather(lat, lon) {
   };
 
   updateMap(lat, lon);
+ if (lat !== lastForecastLat || lon !== lastForecastLon) {
+  lastForecastLat = lat;
+  lastForecastLon = lon;
   loadForecast(lat, lon);
+}
 
   // 🔥 THIS WAS MISSING
   animateUpdate();
