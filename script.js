@@ -94,3 +94,40 @@ async function loadForecast(lat, lon) {
     forecastEl.appendChild(div);
   });
 }
+
+// ---------- PREMIUM ANIMATION HELPERS ----------
+
+function animateUpdate() {
+  const temp = document.getElementById("temperature");
+  if (!temp) return;
+
+  temp.animate(
+    [
+      { transform: "scale(0.92)", opacity: 0.6 },
+      { transform: "scale(1)", opacity: 1 }
+    ],
+    {
+      duration: 450,
+      easing: "cubic-bezier(0.22,1,0.36,1)"
+    }
+  );
+}
+
+function setMood(condition) {
+  if (!condition) return;
+
+  document.body.style.transition = "background 1.2s ease";
+
+  if (condition.includes("rain")) {
+    document.body.style.background =
+      "linear-gradient(180deg,#2c3e50,#000)";
+  } 
+  else if (condition.includes("cloud")) {
+    document.body.style.background =
+      "linear-gradient(180deg,#3a4a5a,#111)";
+  } 
+  else {
+    document.body.style.background =
+      "linear-gradient(180deg,#1e3c72,#2a5298)";
+  }
+}
