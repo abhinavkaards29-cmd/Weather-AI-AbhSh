@@ -51,7 +51,7 @@ async function loadWeather(lat, lon) {
 
   locationEl.textContent = `${d.name}, ${d.sys.country}`;
   conditionEl.textContent = d.weather[0].description;
-  tempEl.textContent = Math.round(d.main.temp) + "°";
+  tempEl.textContent = Math.round(d.main.temp) + "°C";
   humidityEl.textContent = d.main.humidity;
   windEl.textContent = d.wind.speed;
 
