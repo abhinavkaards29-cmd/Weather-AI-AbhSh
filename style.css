@@ -1,330 +1,248 @@
+/* ===================== RESET ===================== */
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
 }
 
 body {
-  margin: 0;
   min-height: 100vh;
-  background: linear-gradient(135deg, #0a84ff, #1c1c1e);
+  color: #fff;
+  background: linear-gradient(135deg, #0a4da2, #2bb0e6);
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
+  transition: background 0.8s ease;
 }
 
+/* ===================== GLASS BASE ===================== */
 .glass {
-  background: rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   border-radius: 22px;
-  padding: 20px;
-  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* ===================== APP CONTAINER ===================== */
+.app {
+  width: 92%;
   max-width: 420px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  padding: 22px;
 }
 
-h1 {
-  margin: 0;
+/* ===================== HEADER ===================== */
+.location {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 6px;
 }
 
-#temperature {
-  font-size: 64px;
+.condition {
+  opacity: 0.85;
+  margin-bottom: 14px;
+}
+
+.temperature {
+  font-size: 4.4rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+/* ===================== SEARCH ===================== */
+.search-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.search-row input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: none;
+  outline: none;
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.search-row button {
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  transition: 0.25s;
+}
+
+.search-row button:hover {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+/* ===================== WEATHER INFO ===================== */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  opacity: 0.9;
+}
+
+/* ===================== AI BUTTON ===================== */
+#aiBtn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 16px;
+  transition: 0.25s;
+}
+
+#aiBtn:hover {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+#aiResult {
+  margin-top: 10px;
+  opacity: 0;
+  transition: 0.4s;
+}
+
+#aiResult.show {
+  opacity: 1;
+}
+
+/* ===================== MAP ===================== */
+#map {
+  width: 100%;
+  height: 220px;
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+
+/* ===================== FORECAST ===================== */
+.forecast-title {
+  margin-bottom: 10px;
   font-weight: 600;
 }
 
-.controls {
-  display: flex;
-  gap: 8px;
-  margin: 14px 0;
-}
-
-input {
-  flex: 1;
-  padding: 10px;
-  border-radius: 12px;
-  border: none;
-}
-
-button {
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: none;
-  background: rgba(255,255,255,0.2);
-  color: white;
-  cursor: pointer;
-}
-
-button:hover {
-  background: rgba(255,255,255,0.35);
-}
-
-.stats {
-  display: flex;
-  justify-content: space-between;
-  margin: 10px 0;
-}
-
-.ai-box {
-  margin-top: 16px;
-  padding: 14px 16px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  color: #fff;
-  font-size: 14px;
-  line-height: 1.6;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.4s ease;
-}
-
-.ai-box.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-#map {
-  height: 220px;
-  border-radius: 16px;
-  margin-top: 12px;
-}
-
 #forecast {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
-  overflow-x: auto;
-  margin-top: 10px;
 }
 
 .forecast-day {
-  min-width: 80px;
-  background: rgba(255,255,255,0.2);
-  border-radius: 14px;
   padding: 10px;
   text-align: center;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.2);
+  font-size: 0.9rem;
 }
 
-/* ---------------- PREMIUM ANIMATIONS ---------------- */
-
-:root {
-  --glass-bg: rgba(255, 255, 255, 0.08);
-  --glass-border: rgba(255, 255, 255, 0.15);
-  --blur: 18px;
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+/* ===================== TOGGLE SWITCH ===================== */
+.unit-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
-/* Smooth page load */
-body {
-  animation: fadeIn 0.8s var(--ease) both;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.98); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
-/* Glass card */
-.phone, header {
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.12),
-    rgba(255,255,255,0.04)
-  );
-  border: 1px solid var(--glass-border);
-  border-radius: 22px;
-  transition: all 0.6s var(--ease);
-}
-
-/* Temperature animation */
-#temperature {
-  animation: floatTemp 3.5s ease-in-out infinite;
-}
-
-@keyframes floatTemp {
-  0%,100% { transform: translateY(0); }
-  50%     { transform: translateY(-6px); }
-}
-
-/* Buttons – Google style */
-button {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 14px;
-  backdrop-filter: blur(14px);
-  transition:
-    transform 0.35s var(--ease),
-    box-shadow 0.35s var(--ease),
-    background 0.35s var(--ease);
-}
-
-/* Hover */
-button:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-}
-
-/* Click */
-button:active {
-  transform: scale(0.96);
-}
-
-/* Input animation */
-input {
-  transition: box-shadow 0.4s var(--ease), transform 0.4s var(--ease);
-}
-
-input:focus {
-  transform: scale(1.02);
-  box-shadow: 0 0 0 2px rgba(255,255,255,0.35);
-  outline: none;
-}
-
-/* Weather condition text */
-#condition {
-  opacity: 0;
-  animation: slideUp 0.8s var(--ease) forwards;
-  animation-delay: 0.2s;
-}
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* Subtle moving gradient background (Google Weather feel) */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(
-    circle at 20% 30%,
-    rgba(255,255,255,0.08),
-    transparent 40%
-  ),
-  radial-gradient(
-    circle at 80% 70%,
-    rgba(255,255,255,0.06),
-    transparent 45%
-  );
-  animation: bgMove 18s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes bgMove {
-  0%   { transform: translate(0,0); }
-  50%  { transform: translate(-20px, -30px); }
-  100% { transform: translate(0,0); }
-}
-
-/* Base background */
-body {
-  transition: background 1.5s ease;
-}
-
-/* Clear / Sunny */
-body.clear {
-  background: linear-gradient(180deg, #4facfe, #00f2fe);
-}
-
-/* Clouds */
-body.clouds {
-  background: linear-gradient(180deg, #bdc3c7, #2c3e50);
-}
-
-/* Rain */
-body.rain {
-  background: linear-gradient(180deg, #314755, #26a0da);
+.switch {
   position: relative;
-  overflow: hidden;
+  width: 52px;
+  height: 28px;
 }
 
-/* Rain animation layer */
-body.rain::before {
-  content: "";
+.switch input {
+  opacity: 0;
+}
+
+.slider {
   position: absolute;
   inset: 0;
-  background-image: repeating-linear-gradient(
-    transparent,
-    rgba(255,255,255,0.15) 2px,
-    transparent 6px
-  );
-  animation: rainMove 0.6s linear infinite;
-  pointer-events: none;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 34px;
+  transition: 0.3s;
 }
 
-@keyframes rainMove {
-  from { background-position: 0 0; }
-  to { background-position: 0 100%; }
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  top: 3px;
+  left: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.3s;
 }
 
-/* Snow */
+.switch input:checked + .slider::before {
+  transform: translateX(24px);
+}
+
+/* ===================== BACKGROUND MODES ===================== */
+body.clear {
+  background: linear-gradient(135deg, #1e90ff, #6dd5fa);
+}
+
+body.clouds {
+  background: linear-gradient(135deg, #6a85b6, #bac8e0);
+}
+
+body.rain {
+  background: linear-gradient(135deg, #1c2a44, #3a6073);
+}
+
 body.snow {
-  background: linear-gradient(180deg, #e6dada, #274046);
+  background: linear-gradient(135deg, #83a4d4, #b6fbff);
 }
 
-/* Thunder */
 body.thunder {
-  background: linear-gradient(180deg, #141E30, #243B55);
+  background: linear-gradient(135deg, #232526, #414345);
 }
 
-@media (orientation: landscape) and (max-width: 900px) {
-  .phone {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    padding: 12px;
-  }
-
-  header {
-    grid-column: 1 / 2;
-  }
-
-  #forecast {
-    grid-column: 1 / 2;
-  }
-
-  #map {
-    grid-column: 2 / 3;
-    height: calc(100vh - 40px);
-  }
-}
-@media (min-width: 901px) {
+/* ===================== LANDSCAPE MODE ===================== */
+@media (orientation: landscape) {
   body {
-    display: flex;
-    justify-content: center;
     align-items: center;
   }
 
-  .phone {
-    width: 900px;
-    max-width: 95vw;
+  .app {
+    max-width: 900px;
     display: grid;
-    grid-template-columns: 1.2fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
-    padding: 20px;
-  }
-
-  header {
-    grid-column: 1 / 2;
-  }
-
-  #forecast {
-    grid-column: 1 / 2;
   }
 
   #map {
-    grid-column: 2 / 3;
-    height: 420px;
+    height: 100%;
+    min-height: 320px;
   }
 
-  .ai-box {
-    grid-column: 1 / -1;
+  #forecast {
+    grid-template-columns: repeat(7, 1fr);
   }
 }
 
-.phone {
-  transition: all 0.3s ease;
+/* ===================== SMALL MOBILE ===================== */
+@media (max-width: 360px) {
+  .temperature {
+    font-size: 3.6rem;
+  }
+
+  #forecast {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
