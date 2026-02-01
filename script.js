@@ -188,4 +188,4 @@ aiBtn.onclick = () => {
 
   aiResult.textContent = insight;
   aiResult.classList.add("show");
-};
+});
