@@ -122,15 +122,22 @@ function updateMap(lat, lon) {
   }
 }
 
-/* ===== BACKGROUND ===== */
-function setMood(cond) {
-  document.body.className = "";
-  cond = cond.toLowerCase();
-  if (cond.includes("rain")) document.body.classList.add("rain","bg-clouds");
-  else if (cond.includes("cloud")) document.body.classList.add("clouds","bg-clouds");
-  else if (cond.includes("snow")) document.body.classList.add("snow");
-  else if (cond.includes("thunder")) document.body.classList.add("thunder");
-  else document.body.classList.add("clear");
+function setMood(condition) {
+  condition = condition.toLowerCase();
+  document.body.className = "animate"; // reset + animate
+
+  const hour = new Date().getHours();
+  if (hour >= 18 || hour <= 5) {
+    document.body.classList.add("night");
+  }
+
+  if (condition.includes("rain")) {
+    document.body.classList.add("rain");
+  } else if (condition.includes("cloud")) {
+    document.body.classList.add("clouds");
+  } else {
+    document.body.classList.add("clear");
+  }
 }
 
 /* ===== °C / °F ===== */
