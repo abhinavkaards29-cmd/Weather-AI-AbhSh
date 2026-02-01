@@ -45,11 +45,16 @@ async function loadWeather(lat, lon) {
   );
   const d = await res.json();
 
-  locationEl.textContent = `${d.name}, ${d.sys.country}`;
-  conditionEl.textContent = d.weather[0].description;
-  tempEl.textContent = Math.round(d.main.temp) + "°";
-  humidityEl.textContent = d.main.humidity;
-  windEl.textContent = d.wind.speed;
+  locationEl.textContent = `${d.name}, ${d.sys.country}`;  
+                                                                           window.currentWeather = {
+  conditionEl.textContent = d.weather[0].description;                        temp: temp,
+  tempEl.textContent = Math.round(d.main.temp) + "°";                        humidity: humidity,
+  humidityEl.textContent = d.main.humidity;                                  wind: wind
+  windEl.textContent = d.wind.speed;                                           };                                  
+                                                                              
+                                                                                
+                                                                                        
+  
 
   updateMap(lat, lon);
   loadForecast(lat, lon);
