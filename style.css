@@ -218,3 +218,54 @@ body::before {
   50%  { transform: translate(-20px, -30px); }
   100% { transform: translate(0,0); }
 }
+
+/* Base background */
+body {
+  transition: background 1.5s ease;
+}
+
+/* Clear / Sunny */
+body.clear {
+  background: linear-gradient(180deg, #4facfe, #00f2fe);
+}
+
+/* Clouds */
+body.clouds {
+  background: linear-gradient(180deg, #bdc3c7, #2c3e50);
+}
+
+/* Rain */
+body.rain {
+  background: linear-gradient(180deg, #314755, #26a0da);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Rain animation layer */
+body.rain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    transparent,
+    rgba(255,255,255,0.15) 2px,
+    transparent 6px
+  );
+  animation: rainMove 0.6s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rainMove {
+  from { background-position: 0 0; }
+  to { background-position: 0 100%; }
+}
+
+/* Snow */
+body.snow {
+  background: linear-gradient(180deg, #e6dada, #274046);
+}
+
+/* Thunder */
+body.thunder {
+  background: linear-gradient(180deg, #141E30, #243B55);
+}
