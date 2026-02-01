@@ -1,224 +1,118 @@
-/* ===================== RESET ===================== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro", sans-serif;
 }
 
 body {
   min-height: 100vh;
-  color: #fff;
-  background: linear-gradient(135deg, #0a4da2, #2bb0e6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: background 0.8s ease;
+  color: white;
+  background: linear-gradient(180deg, #4facfe, #00f2fe);
+  transition: background 1.2s ease;
 }
 
-/* ===================== GLASS BASE ===================== */
-.glass {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border-radius: 22px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow:
-    0 20px 40px rgba(0, 0, 0, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+/* ===== WEATHER THEMES ===== */
+.clear { background: linear-gradient(180deg,#4facfe,#00f2fe); }
+.clouds { background: linear-gradient(180deg,#667db6,#0082c8); }
+.rain { background: linear-gradient(180deg,#314755,#26a0da); }
+.thunder { background: linear-gradient(180deg,#232526,#414345); }
+.snow { background: linear-gradient(180deg,#83a4d4,#b6fbff); }
+
+/* ===== CLOUD ANIMATION ===== */
+.bg-clouds::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("https://i.imgur.com/Fz9kE1p.png") repeat-x;
+  opacity: 0.25;
+  animation: moveClouds 120s linear infinite;
+  pointer-events: none;
 }
 
-/* ===================== APP CONTAINER ===================== */
+@keyframes moveClouds {
+  from { background-position-x: 0; }
+  to { background-position-x: -3000px; }
+}
+
+/* ===== GLASS APP ===== */
 .app {
-  width: 92%;
   max-width: 420px;
-  padding: 22px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 26px;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(22px);
+  box-shadow: 0 20px 40px rgba(0,0,0,.25);
 }
 
-/* ===================== HEADER ===================== */
-.location {
-  font-size: 1.6rem;
-  font-weight: 600;
-  margin-bottom: 6px;
-}
+.location { font-size: 28px; font-weight: 600; }
+.condition { opacity: .85; }
+.temperature { font-size: 72px; font-weight: 700; }
 
-.condition {
-  opacity: 0.85;
-  margin-bottom: 14px;
-}
-
-.temperature {
-  font-size: 4.4rem;
-  font-weight: 700;
-  margin-bottom: 16px;
-}
-
-/* ===================== SEARCH ===================== */
-.search-row {
+.search-bar {
   display: flex;
-  gap: 10px;
-  margin-bottom: 16px;
+  gap: 8px;
+  margin: 12px 0;
 }
 
-.search-row input {
+input {
   flex: 1;
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+}
+
+button {
+  border: none;
   padding: 10px 14px;
-  border-radius: 14px;
-  border: none;
-  outline: none;
-  background: rgba(255, 255, 255, 0.25);
-  color: #fff;
-}
-
-.search-row button {
-  padding: 10px 14px;
-  border-radius: 14px;
-  border: none;
-  cursor: pointer;
-  background: rgba(255, 255, 255, 0.3);
-  color: #fff;
-  transition: 0.25s;
-}
-
-.search-row button:hover {
-  background: rgba(255, 255, 255, 0.45);
-}
-
-/* ===================== WEATHER INFO ===================== */
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 14px;
-  opacity: 0.9;
-}
-
-/* ===================== AI BUTTON ===================== */
-#aiBtn {
-  width: 100%;
-  padding: 12px;
-  border-radius: 16px;
-  border: none;
-  cursor: pointer;
-  background: rgba(255, 255, 255, 0.3);
-  color: #fff;
-  font-size: 1rem;
-  margin-bottom: 16px;
-  transition: 0.25s;
-}
-
-#aiBtn:hover {
-  background: rgba(255, 255, 255, 0.45);
-}
-
-#aiResult {
-  margin-top: 10px;
-  opacity: 0;
-  transition: 0.4s;
-}
-
-#aiResult.show {
-  opacity: 1;
-}
-
-/* ===================== MAP ===================== */
-#map {
-  width: 100%;
-  height: 220px;
-  border-radius: 18px;
-  overflow: hidden;
-  margin-bottom: 18px;
-}
-
-/* ===================== FORECAST ===================== */
-.forecast-title {
-  margin-bottom: 10px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.35);
   font-weight: 600;
+  cursor: pointer;
 }
 
-#forecast {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+.ai-btn {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.ai-result {
+  margin-top: 10px;
+  opacity: .9;
+}
+
+.toggle {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#map {
+  margin-top: 14px;
+  height: 220px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.forecast {
+  display: flex;
   gap: 10px;
+  overflow-x: auto;
+  margin-top: 12px;
 }
 
 .forecast-day {
-  padding: 10px;
+  min-width: 90px;
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.25);
   text-align: center;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.2);
-  font-size: 0.9rem;
 }
 
-/* ===================== TOGGLE SWITCH ===================== */
-.unit-toggle {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.switch {
-  position: relative;
-  width: 52px;
-  height: 28px;
-}
-
-.switch input {
-  opacity: 0;
-}
-
-.slider {
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 34px;
-  transition: 0.3s;
-}
-
-.slider::before {
-  content: "";
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  top: 3px;
-  left: 3px;
-  background: white;
-  border-radius: 50%;
-  transition: 0.3s;
-}
-
-.switch input:checked + .slider::before {
-  transform: translateX(24px);
-}
-
-/* ===================== BACKGROUND MODES ===================== */
-body.clear {
-  background: linear-gradient(135deg, #1e90ff, #6dd5fa);
-}
-
-body.clouds {
-  background: linear-gradient(135deg, #6a85b6, #bac8e0);
-}
-
-body.rain {
-  background: linear-gradient(135deg, #1c2a44, #3a6073);
-}
-
-body.snow {
-  background: linear-gradient(135deg, #83a4d4, #b6fbff);
-}
-
-body.thunder {
-  background: linear-gradient(135deg, #232526, #414345);
-}
-
-/* ===================== LANDSCAPE MODE ===================== */
+/* ===== LANDSCAPE MODE ===== */
 @media (orientation: landscape) {
-  body {
-    align-items: center;
-  }
-
   .app {
     max-width: 900px;
     display: grid;
@@ -228,21 +122,5 @@ body.thunder {
 
   #map {
     height: 100%;
-    min-height: 320px;
-  }
-
-  #forecast {
-    grid-template-columns: repeat(7, 1fr);
-  }
-}
-
-/* ===================== SMALL MOBILE ===================== */
-@media (max-width: 360px) {
-  .temperature {
-    font-size: 3.6rem;
-  }
-
-  #forecast {
-    grid-template-columns: repeat(2, 1fr);
   }
 }
