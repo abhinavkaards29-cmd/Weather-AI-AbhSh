@@ -38,11 +38,11 @@ async function searchPlace(q) {
   loadWeather(data[0].lat, data[0].lon);
 }
 
+let lastForecastLat = null;
+let lastForecastLon = null;
 if (!lat || !lon) return;
 // LOAD WEATHER
 async function loadWeather(lat, lon) {
-  let lastForecastLat = null;
-  let lastForecastLon = null;
   const res = await fetch(
     `${WEATHER_URL}?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
   );
@@ -155,7 +155,7 @@ function setMood(condition) {
 const aiBtn = document.getElementById("aiBtn");
 const aiResult = document.getElementById("aiResult");
 
-aiBtn.addEventListener("click", () => {
+aiBtn.onclick = () => {
   if (!window.currentWeather) {
     aiResult.textContent = "Get weather first, then tap AI Insight.";
     aiResult.classList.add("show");
@@ -164,6 +164,7 @@ aiBtn.addEventListener("click", () => {
 
   const { temp, humidity, wind } = window.currentWeather;
   let insight = "";
+
 
   if (temp <= 10) {
     insight += "❄️ Cold weather detected. Wear warm clothes. ";
@@ -187,4 +188,4 @@ aiBtn.addEventListener("click", () => {
 
   aiResult.textContent = insight;
   aiResult.classList.add("show");
-});
+};
