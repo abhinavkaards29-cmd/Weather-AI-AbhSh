@@ -192,3 +192,21 @@ dateEl.textContent = new Date().toLocaleDateString(undefined, dateOptions);
 
 document.querySelector(".main-card")?.prepend(dateEl);
 
+/* ================= MY LOCATION RESTORE ================= */
+const locBtn = document.getElementById("locBtn");
+
+if (locBtn) {
+  locBtn.onclick = () => {
+    if (!navigator.geolocation) {
+      alert("Location not supported");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        loadWeather(pos.coords.latitude, pos.coords.longitude);
+      },
+      () => alert("Location permission denied")
+    );
+  };
+}
