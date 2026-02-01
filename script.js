@@ -131,3 +131,41 @@ function setMood(condition) {
       "linear-gradient(180deg,#1e3c72,#2a5298)";
   }
 }
+
+// ---------- AI WEATHER INSIGHT (SAFE, NO API) ----------
+const aiBtn = document.getElementById("aiBtn");
+const aiResult = document.getElementById("aiResult");
+
+aiBtn.addEventListener("click", () => {
+  if (!window.currentWeather) {
+    aiResult.textContent = "Get weather first, then tap AI Insight.";
+    aiResult.classList.add("show");
+    return;
+  }
+
+  const { temp, humidity, wind } = window.currentWeather;
+  let insight = "";
+
+  if (temp <= 10) {
+    insight += "❄️ Cold weather detected. Wear warm clothes. ";
+  } else if (temp <= 20) {
+    insight += "🌤️ Cool and comfortable temperature. ";
+  } else if (temp <= 30) {
+    insight += "☀️ Warm weather. Stay hydrated. ";
+  } else {
+    insight += "🔥 Very hot conditions. Avoid outdoor activities. ";
+  }
+
+  if (humidity > 70) {
+    insight += "High humidity may cause discomfort. ";
+  }
+
+  if (wind > 5) {
+    insight += "Windy conditions detected. ";
+  }
+
+  insight += "Overall, today looks manageable with proper planning.";
+
+  aiResult.textContent = insight;
+  aiResult.classList.add("show");
+});
