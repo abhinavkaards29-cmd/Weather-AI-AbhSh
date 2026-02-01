@@ -36,16 +36,25 @@ searchBtn.onclick = () => {
   if (searchInput.value.trim()) searchPlace(searchInput.value);
 };
 
-/* ===== VOICE ===== */
-if ("webkitSpeechRecognition" in window) {
+/* ================= VOICE SEARCH ================= */
+const micBtn = document.getElementById("micBtn");
+if (micBtn && "webkitSpeechRecognition" in window) {
   const rec = new webkitSpeechRecognition();
   rec.lang = "en-US";
-  voiceBtn.onclick = () => rec.start();
+
+  micBtn.onclick = () => {
+    rec.start();
+    micBtn.classList.add("listening");
+  };
+
   rec.onresult = e => {
-    searchInput.value = e.results[0][0].transcript;
-    searchPlace(searchInput.value);
+    const text = e.results[0][0].transcript;
+    searchInput.value = text;
+    searchPlace(text);
+    micBtn.classList.remove("listening");
   };
 }
+
 
 /* ===== GEO SEARCH ===== */
 async function searchPlace(q) {
@@ -146,3 +155,40 @@ aiBtn.onclick = () => {
   else msg += "Very hot. Avoid outdoor activities.";
   aiResult.textContent = msg;
 };
+
+/* ================= LIVE SKY BACKGROUND ================= */
+function setSkyVideo() {
+  const hour = new Date().getHours();
+  const sky = document.getElementById("skyBg");
+
+  if (hour >= 6 && hour < 18) {
+    sky.src = "https://cdn.coverr.co/videos/coverr-clouds-over-mountains-9711/1080p.mp4";
+  } else {
+    sky.src = "https://cdn.coverr.co/videos/coverr-night-sky-with-stars-9156/1080p.mp4";
+  }
+}
+setSkyVideo();
+
+/* ================= LIVE SKY BACKGROUND ================= */
+function setSkyVideo() {
+  const hour = new Date().getHours();
+  const sky = document.getElementById("skyBg");
+
+  if (hour >= 6 && hour < 18) {
+    sky.src = "https://cdn.coverr.co/videos/coverr-clouds-over-mountains-9711/1080p.mp4";
+  } else {
+    sky.src = "https://cdn.coverr.co/videos/coverr-night-sky-with-stars-9156/1080p.mp4";
+  }
+}
+setSkyVideo();
+
+/* ================= DATE DISPLAY ================= */
+const dateEl = document.createElement("div");
+dateEl.style.opacity = "0.7";
+dateEl.style.marginTop = "6px";
+
+const dateOptions = { weekday: "long", day: "numeric", month: "long" };
+dateEl.textContent = new Date().toLocaleDateString(undefined, dateOptions);
+
+document.querySelector(".main-card")?.prepend(dateEl);
+
