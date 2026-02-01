@@ -15,6 +15,8 @@ const windEl = document.getElementById("wind");
 const forecastEl = document.getElementById("forecast");
 
 let map, marker;
+let lastForecastLat = null;
+let lastForecastLon = null;
 
 // EVENTS
 searchBtn.onclick = () => {
@@ -38,8 +40,7 @@ async function searchPlace(q) {
   loadWeather(data[0].lat, data[0].lon);
 }
 
-let lastForecastLat = null;
-let lastForecastLon = null;
+
 if (!lat || !lon) return;
 // LOAD WEATHER
 async function loadWeather(lat, lon) {
