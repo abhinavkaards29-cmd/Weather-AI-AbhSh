@@ -38,7 +38,7 @@ async function searchPlace(q) {
   loadWeather(data[0].lat, data[0].lon);
 }
 
-
+if (!lat || !lon) return;
 // LOAD WEATHER
 async function loadWeather(lat, lon) {
   const res = await fetch(
@@ -79,7 +79,6 @@ function updateMap(lat, lon) {
     map.setView([lat, lon], 11);
     marker.setLatLng([lat, lon]);
   }
-  setTimeout(() => map.invalidateSize(), 100);
 }
 
 // FORECAST
