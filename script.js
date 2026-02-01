@@ -46,23 +46,29 @@ async function loadWeather(lat, lon) {
   );
   const d = await res.json();
 
-  locationEl.textContent = `${d.name}, ${d.sys.country}`;  
-                                                                          
- conditionEl.textContent = d.weather[0].description;
- tempEl.textContent = Math.round(d.main.temp) + "°";
- humidityEl.textContent = d.main.humidity;
- windEl.textContent = d.wind.speed;
-  
-window.currentWeather = {
-  temp: Math.round(d.main.temp),
-  humidity: d.main.humidity,
-  wind: d.wind.speed,
-  condition: d.weather[0].description,
-  lat,
-  lon
-};
+  locationEl.textContent = `${d.name}, ${d.sys.country}`;
+  conditionEl.textContent = d.weather[0].description;
+  tempEl.textContent = Math.round(d.main.temp) + "°";
+  humidityEl.textContent = d.main.humidity;
+  windEl.textContent = d.wind.speed;
 
-  
+  window.currentWeather = {
+    temp: Math.round(d.main.temp),
+    humidity: d.main.humidity,
+    wind: d.wind.speed,
+    condition: d.weather[0].description,
+    lat,
+    lon
+  };
+
+  updateMap(lat, lon);
+  loadForecast(lat, lon);
+
+  // 🔥 THIS WAS MISSING
+  animateUpdate();
+  setMood(d.weather[0].description);
+}
+
 // MAP (SAFE)
 function updateMap(lat, lon) {
   if (!map) {
