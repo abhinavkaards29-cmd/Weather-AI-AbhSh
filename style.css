@@ -84,3 +84,117 @@ button:hover {
   padding: 10px;
   text-align: center;
 }
+
+/* ---------------- PREMIUM ANIMATIONS ---------------- */
+
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --blur: 18px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Smooth page load */
+body {
+  animation: fadeIn 0.8s var(--ease) both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Glass card */
+.phone, header {
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.12),
+    rgba(255,255,255,0.04)
+  );
+  border: 1px solid var(--glass-border);
+  border-radius: 22px;
+  transition: all 0.6s var(--ease);
+}
+
+/* Temperature animation */
+#temperature {
+  animation: floatTemp 3.5s ease-in-out infinite;
+}
+
+@keyframes floatTemp {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-6px); }
+}
+
+/* Buttons – Google style */
+button {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  backdrop-filter: blur(14px);
+  transition:
+    transform 0.35s var(--ease),
+    box-shadow 0.35s var(--ease),
+    background 0.35s var(--ease);
+}
+
+/* Hover */
+button:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+
+/* Click */
+button:active {
+  transform: scale(0.96);
+}
+
+/* Input animation */
+input {
+  transition: box-shadow 0.4s var(--ease), transform 0.4s var(--ease);
+}
+
+input:focus {
+  transform: scale(1.02);
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.35);
+  outline: none;
+}
+
+/* Weather condition text */
+#condition {
+  opacity: 0;
+  animation: slideUp 0.8s var(--ease) forwards;
+  animation-delay: 0.2s;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Subtle moving gradient background (Google Weather feel) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    circle at 20% 30%,
+    rgba(255,255,255,0.08),
+    transparent 40%
+  ),
+  radial-gradient(
+    circle at 80% 70%,
+    rgba(255,255,255,0.06),
+    transparent 45%
+  );
+  animation: bgMove 18s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes bgMove {
+  0%   { transform: translate(0,0); }
+  50%  { transform: translate(-20px, -30px); }
+  100% { transform: translate(0,0); }
+}
