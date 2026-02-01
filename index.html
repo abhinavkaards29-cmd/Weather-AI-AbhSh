@@ -25,11 +25,17 @@
         <span id="unit">°C</span>
       </div>
 
-      <div class="search-bar">
-        <input id="searchInput" placeholder="Area / City / Country" />
-        <button id="searchBtn">Search</button>
-        <button id="voiceBtn">🎤</button>
-      </div>
+      <div class="search-row">
+  <input id="searchInput" placeholder="Area / City / Country" />
+
+  <button id="searchBtn">Search</button>
+
+  <!-- 🎙️ Voice Search -->
+  <button id="micBtn" title="Voice Search">🎙️</button>
+
+  <!-- 📍 My Location -->
+  <button id="locBtn">My Location📍</button>
+</div>
 
       <div class="info">
         <div>Humidity: <span id="humidity">--</span></div>
@@ -61,7 +67,13 @@
 </body>
 </html>
 <!-- Animated Sky Background -->
-<video id="skyBg" autoplay muted loop playsinline></video>
+<body>
+  <video id="skyBg" autoplay muted loop playsinline></video>
+
+  <div class="app">
+    <!-- your existing content -->
+  </div>
+</body>
 
 <!-- Footer Credit -->
 <footer class="credit">
