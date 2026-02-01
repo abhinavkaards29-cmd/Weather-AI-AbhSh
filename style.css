@@ -124,3 +124,74 @@ button {
     height: 100%;
   }
 }
+/* ================= SKY VIDEO BACKGROUND ================= */
+#skyBg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+  filter: brightness(0.9) saturate(1.1);
+}
+
+/* Dark overlay for readability */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    rgba(0,0,0,0.25),
+    rgba(0,0,0,0.35)
+  );
+  z-index: -1;
+}
+
+/* ================= GLASS CARD POLISH ================= */
+.main-card {
+  backdrop-filter: blur(22px);
+  background: rgba(255,255,255,0.16);
+  border-radius: 28px;
+  padding: 24px;
+}
+
+/* ================= BUTTON FIX ================= */
+button, .btn {
+  font-size: 15px;
+  padding: 10px 18px;
+  border-radius: 14px;
+}
+
+/* ================= MAP BALANCE ================= */
+#map {
+  border-radius: 22px;
+  overflow: hidden;
+  min-height: 280px;
+}
+
+/* ================= RESPONSIVE LAYOUT ================= */
+@media (orientation: landscape) {
+  .main-card {
+    max-width: 1100px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-card {
+    padding: 18px;
+  }
+}
+
+/* ================= FOOTER ================= */
+.credit {
+  position: fixed;
+  bottom: 10px;
+  right: 14px;
+  font-size: 12px;
+  opacity: 0.75;
+  color: white;
+}
