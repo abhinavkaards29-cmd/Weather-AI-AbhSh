@@ -64,6 +64,26 @@ button:hover {
   margin: 10px 0;
 }
 
+.ai-box {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.6;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s ease;
+}
+
+.ai-box.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 #map {
   height: 220px;
   border-radius: 16px;
