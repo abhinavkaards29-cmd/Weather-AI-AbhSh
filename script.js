@@ -1,8 +1,11 @@
+/* ===================== CONFIG ===================== */
 const API_KEY = "fab9b6d2db473ddcfb43b90e080ca8ee";
-const WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather";
+
 const GEO_URL = "https://api.openweathermap.org/geo/1.0/direct";
+const WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather";
 const FORECAST_URL = "https://api.openweathermap.org/data/2.5/forecast";
 
+/* ===================== ELEMENTS ===================== */
 const searchInput = document.getElementById("searchInput");
 const searchBtn = document.getElementById("searchBtn");
 const locBtn = document.getElementById("locBtn");
@@ -14,11 +17,18 @@ const humidityEl = document.getElementById("humidity");
 const windEl = document.getElementById("wind");
 const forecastEl = document.getElementById("forecast");
 
+const aiBtn = document.getElementById("aiBtn");
+const aiResult = document.getElementById("aiResult");
+
+/* ===================== STATE ===================== */
 let map, marker;
+let weatherLoading = false;
+let forecastLoading = false;
 let lastForecastLat = null;
 let lastForecastLon = null;
+let tempAnimation = null;
 
-// EVENTS
+/* ===================== EVENTS ===================== */
 searchBtn.onclick = () => {
   const q = searchInput.value.trim();
   if (q) searchPlace(q);
@@ -30,7 +40,7 @@ locBtn.onclick = () => {
   });
 };
 
-// SEARCH AREA / CITY / COUNTRY
+/* ===================== SEARCH ===================== */
 async function searchPlace(q) {
   const res = await fetch(
     `${GEO_URL}?q=${encodeURIComponent(q)}&limit=1&appid=${API_KEY}`
@@ -40,33 +50,32 @@ async function searchPlace(q) {
   loadWeather(data[0].lat, data[0].lon);
 }
 
-
-// LOAD WEATHER
+/* ===================== WEATHER ===================== */
 async function loadWeather(lat, lon) {
+  if (weatherLoading) return;
+  weatherLoading = true;
+
   try {
     const res = await fetch(
       `${WEATHER_URL}?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
     );
-
-    if (!res.ok) throw new Error("Weather fetch failed");
-
     const d = await res.json();
 
     locationEl.textContent = `${d.name}, ${d.sys.country}`;
     conditionEl.textContent = d.weather[0].description;
     tempEl.textContent = Math.round(d.main.temp) + "°C";
-    humidityEl.textContent = d.main.humidity;
-    windEl.textContent = d.wind.speed;
+    humidityEl.textContent = d.main.humidity + "%";
+    windEl.textContent = d.wind.speed + " m/s";
 
     window.currentWeather = {
       temp: Math.round(d.main.temp),
       humidity: d.main.humidity,
       wind: d.wind.speed,
-      condition: d.weather[0].description,
-      lat,
-      lon
+      condition: d.weather[0].description
     };
 
+    animateTemperature();
+    setMood(d.weather[0].description);
     updateMap(lat, lon);
 
     if (lat !== lastForecastLat || lon !== lastForecastLon) {
@@ -75,15 +84,14 @@ async function loadWeather(lat, lon) {
       loadForecast(lat, lon);
     }
 
-    animateUpdate();
-    setMood(d.weather[0].description);
-
-  } catch (err) {
-    console.error(err);
+  } catch (e) {
+    console.error(e);
+  } finally {
+    weatherLoading = false;
   }
 }
 
-// MAP (SAFE)
+/* ===================== MAP ===================== */
 function updateMap(lat, lon) {
   if (!map) {
     map = L.map("map").setView([lat, lon], 11);
@@ -92,21 +100,19 @@ function updateMap(lat, lon) {
   } else {
     map.setView([lat, lon], 11);
     marker.setLatLng([lat, lon]);
+    map.invalidateSize();
   }
 }
 
-// FORECAST
-let forecastLoading = false;
-
+/* ===================== FORECAST ===================== */
 async function loadForecast(lat, lon) {
-  if (forecastLoading) return; // 🚫 prevent overlap
+  if (forecastLoading) return;
   forecastLoading = true;
 
   try {
     const res = await fetch(
       `${FORECAST_URL}?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
     );
-
     const data = await res.json();
 
     forecastEl.innerHTML = "";
@@ -122,7 +128,7 @@ async function loadForecast(lat, lon) {
       div.className = "forecast-day";
       div.innerHTML = `
         <div>${new Date(d.dt_txt).toDateString().slice(0,3)}</div>
-        <div>${Math.round(d.main.temp)}°</div>
+        <div>${Math.round(d.main.temp)}°C</div>
         <div>${d.weather[0].main}</div>
       `;
       forecastEl.appendChild(div);
@@ -135,20 +141,13 @@ async function loadForecast(lat, lon) {
   }
 }
 
-// ---------- PREMIUM ANIMATION HELPERS ----------
-
-  let tempAnimation;
-
-function animateUpdate() {
-  const temp = document.getElementById("temperature");
-  if (!temp) return;
-
-  // 🔥 cancel previous animation if exists
+/* ===================== ANIMATION ===================== */
+function animateTemperature() {
   if (tempAnimation) tempAnimation.cancel();
 
-  tempAnimation = temp.animate(
+  tempAnimation = tempEl.animate(
     [
-      { transform: "scale(0.92)", opacity: 0.6 },
+      { transform: "scale(0.9)", opacity: 0.6 },
       { transform: "scale(1)", opacity: 1 }
     ],
     {
@@ -159,32 +158,26 @@ function animateUpdate() {
   );
 }
 
+/* ===================== BACKGROUND ===================== */
 function setMood(condition) {
-  if (!condition) return;
-
   document.body.style.transition = "background 1.2s ease";
 
   if (condition.includes("rain")) {
     document.body.style.background =
       "linear-gradient(180deg,#2c3e50,#000)";
-  } 
-  else if (condition.includes("cloud")) {
+  } else if (condition.includes("cloud")) {
     document.body.style.background =
       "linear-gradient(180deg,#3a4a5a,#111)";
-  } 
-  else {
+  } else {
     document.body.style.background =
       "linear-gradient(180deg,#1e3c72,#2a5298)";
   }
 }
 
-// ---------- AI WEATHER INSIGHT (SAFE, NO API) ----------
-const aiBtn = document.getElementById("aiBtn");
-const aiResult = document.getElementById("aiResult");
-
+/* ===================== AI INSIGHT ===================== */
 aiBtn.onclick = () => {
   if (!window.currentWeather) {
-    aiResult.textContent = "Get weather first, then tap AI Insight.";
+    aiResult.textContent = "Get weather first.";
     aiResult.classList.add("show");
     return;
   }
@@ -192,27 +185,16 @@ aiBtn.onclick = () => {
   const { temp, humidity, wind } = window.currentWeather;
   let insight = "";
 
+  if (temp <= 10) insight += "❄️ Cold weather. Wear warm clothes. ";
+  else if (temp <= 20) insight += "🧥 Cool and comfortable. ";
+  else if (temp <= 30) insight += "☀️ Warm weather. Stay hydrated. ";
+  else insight += "🔥 Very hot. Avoid outdoor activities. ";
 
-  if (temp <= 10) {
-    insight += "❄️ Cold weather detected. Wear warm clothes. ";
-  } else if (temp <= 20) {
-    insight += "🌤️ Cool and comfortable temperature. ";
-  } else if (temp <= 30) {
-    insight += "☀️ Warm weather. Stay hydrated. ";
-  } else {
-    insight += "🔥 Very hot conditions. Avoid outdoor activities. ";
-  }
+  if (humidity > 70) insight += "High humidity may cause discomfort. ";
+  if (wind > 5) insight += "Windy conditions detected. ";
 
-  if (humidity > 70) {
-    insight += "High humidity may cause discomfort. ";
-  }
-
-  if (wind > 5) {
-    insight += "Windy conditions detected. ";
-  }
-
-  insight += "Overall, today looks manageable with proper planning.";
+  insight += "Overall, today looks manageable with planning.";
 
   aiResult.textContent = insight;
   aiResult.classList.add("show");
-});
+};
