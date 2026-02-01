@@ -6,10 +6,26 @@ const WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather";
 const FORECAST_URL = "https://api.openweathermap.org/data/2.5/forecast";
 
 /* ===================== ELEMENTS ===================== */
+function haptic(ms = 15) {
+  if ("vibrate" in navigator) {
+    navigator.vibrate(ms);
+  }
+}
+
 const searchInput = document.getElementById("searchInput");
 const searchBtn = document.getElementById("searchBtn");
+searchBtn.onclick = () => {
+  haptic(10);
+  const q = searchInput.value.trim();
+  if (q) searchPlace(q);
+};
 const locBtn = document.getElementById("locBtn");
-
+locBtn.onclick = () => {
+  haptic(15);
+  navigator.geolocation.getCurrentPosition(pos => {
+    loadWeather(pos.coords.latitude, pos.coords.longitude);
+  });
+};
 const locationEl = document.getElementById("location");
 const conditionEl = document.getElementById("condition");
 const tempEl = document.getElementById("temperature");
@@ -18,6 +34,11 @@ const windEl = document.getElementById("wind");
 const forecastEl = document.getElementById("forecast");
 
 const aiBtn = document.getElementById("aiBtn");
+aiBtn.onclick = () => {
+  haptic(8);
+  if (!window.currentWeather) return;
+  ...
+};
 const aiResult = document.getElementById("aiResult");
 
 /* ===================== STATE ===================== */
@@ -160,17 +181,20 @@ function animateTemperature() {
 
 /* ===================== BACKGROUND ===================== */
 function setMood(condition) {
-  document.body.style.transition = "background 1.2s ease";
+  condition = condition.toLowerCase();
+
+  document.body.className = ""; // reset
 
   if (condition.includes("rain")) {
-    document.body.style.background =
-      "linear-gradient(180deg,#2c3e50,#000)";
+    document.body.classList.add("rain");
   } else if (condition.includes("cloud")) {
-    document.body.style.background =
-      "linear-gradient(180deg,#3a4a5a,#111)";
+    document.body.classList.add("clouds");
+  } else if (condition.includes("snow")) {
+    document.body.classList.add("snow");
+  } else if (condition.includes("thunder")) {
+    document.body.classList.add("thunder");
   } else {
-    document.body.style.background =
-      "linear-gradient(180deg,#1e3c72,#2a5298)";
+    document.body.classList.add("clear");
   }
 }
 
